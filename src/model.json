@@ -1,0 +1,4 @@
+{
+    "chatgpt" : ["gpt-3.5-turbo"],
+    "googleGemini": ["gpt-3.5-turbo"]
+}

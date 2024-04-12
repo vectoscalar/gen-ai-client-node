@@ -1,0 +1,19 @@
+{
+  "name": "aiwrapper",
+  "version": "1.0.0",
+  "description": "Package for genrative output from the ai models like gemini, chatGPT etc.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.4.4"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.5.0",
+    "openai": "^4.33.0"
+  }
+}
