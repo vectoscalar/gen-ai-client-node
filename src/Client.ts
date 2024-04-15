@@ -1,5 +1,6 @@
 import { OpenAI } from "openai";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { BadRequestError } from "./errors";
 
 
 export class client{
@@ -11,13 +12,15 @@ export class client{
         console.log("inside the client",modelName)
         switch (modelName.toLowerCase()) {
             case 'openai':
-                this.client =  {clientObject : new OpenAI({ apiKey: key}),clientname:modelName}
+                try{this.client =  {clientObject : new OpenAI({ apiKey: key}),clientname:modelName}}
+                catch(error : any){ throw new BadRequestError("400",error)}
                 break
             case 'googlegenerativeai':
-                this.client = {clientObject:new GoogleGenerativeAI(key),clientname:modelName};
+                try{this.client = {clientObject:new GoogleGenerativeAI(key),clientname:modelName}}
+                catch(error : any){ throw new BadRequestError("400", error)}
                 break
             default:
-                throw new Error(`Unsupported AI model: ${modelName}`);
+                throw new BadRequestError("400","Unsupported AI model");
         }
         return this.client
     }
