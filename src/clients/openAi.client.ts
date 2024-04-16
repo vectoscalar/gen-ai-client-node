@@ -9,23 +9,29 @@ export class OpenAi {
   async invoke(prompt: string, options?: any): Promise<any> {
     const defaultOptions = {
       model: "gpt-3.5-turbo",
+      messages: [
+        {
+          role: "user",
+          content: prompt,
+        },
+      ],
       temperature: 1,
       max_tokens: 256,
       top_p: 1,
       frequency_penalty: 0,
       presence_penalty: 0,
     };
-    const message = {  messages: [
+    const messages = [
       {
         role: "user",
         content: prompt,
       },
-    ],}
-    const mergedOptions = { ...defaultOptions, ...options, ...message };
+    ];
+    const mergedOptions = { ...defaultOptions, ...options, messages };
+    console.log(mergedOptions);
     try {
-      const response: any = await this.client.chat.completions.create(
-        mergedOptions
-      );
+      const response: any =
+        await this.client.chat.completions.create(mergedOptions);
       const chatGptResponse: any = response.choices[0].message.content;
 
       if (chatGptResponse !== undefined && chatGptResponse !== "NULL") {
