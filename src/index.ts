@@ -1,26 +1,31 @@
-import { OpenAi } from "./clients/openAi.client";
+import { OpenAi, AdditionalOptions } from "./clients/openAi.client";
 import { GoogleGenerativeAi } from "./clients/googleGenrativeAi.client";
-export class AIWrapper {
-  getClient(apiKey: string, modelName: string, options?: object) {
-    switch (modelName) {
-      case "OpenAI":
-        const openAiObj = new OpenAi(apiKey);
-        return openAiObj;
+export class AIClient {
+  public client :any
+  constructor(apiKey: string, provider: string,modelVersion?:string) {
+    switch (provider) {
+      case "OpenAI":  
+        this.client=new OpenAi(apiKey)
+        break
       case "GoogleGenerativeAI":
-        const genrativeAiObj = new GoogleGenerativeAi(apiKey);
-        return genrativeAiObj;
+        this.client = new GoogleGenerativeAi(apiKey,modelVersion)
+        break
       default:
         throw new Error();
     }
   }
+  async execute(prompt:string,options?: AdditionalOptions){
+    return this.client.executePrompt(prompt,options)
+  } 
+  
 }
 
-// const modelName = 'OpenAI';
+const provider = 'OpenAI';
 // const modelName = 'GoogleGenerativeAI';
-// const wrapper = new AIWrapper();
+// const wrapper = new AIClient(apiKey,provider);
 // const prompt = 'can we make banana shake with mango';
-// const client = wrapper.getClient(apiKey,modelName)
-// client.invoke(prompt).then((response)=>{
+// // const client = wrapper.getClient(apiKey,
+// wrapper.execute(prompt).then((response)=>{
 //       console.log(response)
 //     }).catch((error)=>{console.log(error)})
 
