@@ -1,23 +1,43 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
-import { BaseClass } from "../baseClass";
+import {
+  GenerationConfig,
+  GoogleGenerativeAI,
+  Part,
+} from "@google/generative-ai";
+import { AIClient, GenrativeAiModels } from "../common/types";
+import { DEFAULT_GENRATIVEAI_MODEL } from "../common/constants";
 
-export class GoogleGenerativeAi extends BaseClass {
-  client:GoogleGenerativeAI;
-  model : string;
-  constructor(apiKey: string,modelVersion?:string) {
-    super(apiKey,modelVersion)
+export class GoogleGenerativeAi implements AIClient {
+  client: GoogleGenerativeAI;
+  /**
+   * Creates an instance of GoogleGenerativeAi.
+   * @param {string} apiKey The API key for accessing Google Generative AI.
+   */
+  constructor(apiKey: string) {
     this.client = new GoogleGenerativeAI(apiKey);
-    this.model = modelVersion || "gemini-1.0-pro-latest";
   }
-  async executePrompt(prompt: string): Promise<any> {
+
+  /**
+   * Executes a prompt using Google Generative AI.
+   * @param {string | Array<string | Part>} prompt The prompt to execute, which can be a string or an array of strings or parts.
+   * @param {GenerationConfig} [generationConfig] Optional configuration for generating content.
+   * @param {GenrativeAiModels["model"]} [modelVersion] Optional model version to use.
+   * @returns {Promise<any>} A promise that resolves with the generated content.
+   */
+  async executePrompt(
+    prompt: string | Array<string | Part>,
+    options?: GenerationConfig,
+    modelVersion?: GenrativeAiModels["GenrativeAIModels"]
+  ): Promise<any> {
     try {
-      const model = await this.client.getGenerativeModel({
-        model: this.model,
+      const model = this.client.getGenerativeModel({
+        model: DEFAULT_GENRATIVEAI_MODEL,
+        ...(options && {generationConfig:options})
       });
       const response = await model.generateContent(prompt);
-      return await response.response.text();
+      return response.response.text();
     } catch (error) {
       console.log("Error in genraticeAi", error);
     }
   }
 }
+

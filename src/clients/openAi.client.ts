@@ -1,42 +1,42 @@
 import { OpenAI } from "openai";
-// import ChatCompletionCreateParamsNonStreaming from "openai";
-import {ChatCompletionCreateParamsNonStreaming} from "openai/src/resources/chat"
-import { BaseClass } from "../baseClass";
-export interface AdditionalOptions {
-  temperature?: number;
-  max_tokens?: number;
-  top_p?: number;
-  frequency_penalty?: number;
-  presence_penalty?: number;
-}
-export class OpenAi extends BaseClass {
-  client: OpenAI;
-  model : string;
-  constructor(apiKey: string,modelVersion?:string) {
-    super(apiKey,modelVersion)
-    this.client = new OpenAI({ apiKey: apiKey });
-    this.model = modelVersion || 'gpt-3.5-turbo'
+import { ChatCompletionCreateParamsNonStreaming } from "openai/src/resources/chat";
+import { AIClient, OpenAIAdditionalOptions } from "../common/types";
+import { ChatCompletionCreateParamsBase } from "openai/resources/chat/completions";
+import { DEFAULT_OPENAI_MODEL } from "../common/constants";
 
+export class OpenAi implements AIClient {
+  client: OpenAI;
+  /**
+   * Creates an instance of OpenAi.
+   * @param {string} apiKey The API key for accessing OpenAI.
+   */
+  constructor(apiKey: string) {
+    this.client = new OpenAI({ apiKey: apiKey });
   }
 
-  async executePrompt(prompt: string, additionalOptions?: AdditionalOptions): Promise<any> {
-    const options:ChatCompletionCreateParamsNonStreaming = {
-      model: this.model,
+  /**
+   * Executes a prompt using OpenAI.
+   * @param {string} prompt The prompt to execute.
+   * @param {OpenAIAdditionalOptions} [additionalOptions] Additional options for executing the prompt.
+   * @param {ChatCompletionCreateParamsNonStreaming["model"]} [modelVersion] Optional model version to use.
+   * @returns {Promise<any>} A promise that resolves with the generated content.
+   */
+  async executePrompt(
+    prompt: string,
+    options?: OpenAIAdditionalOptions ,
+    modelVersion?: ChatCompletionCreateParamsNonStreaming["model"]
+  ): Promise<any> {
+    const mergedOptions : ChatCompletionCreateParamsBase = {
+      model: modelVersion || DEFAULT_OPENAI_MODEL,
       messages: [
         {
           role: "user",
           content: prompt,
-        }
-      ],
-      temperature: additionalOptions?.temperature || 1,
-      max_tokens: additionalOptions?.max_tokens || 256,
-      top_p: additionalOptions?.top_p || 1,
-      frequency_penalty: additionalOptions?.frequency_penalty || 0,
-      presence_penalty: additionalOptions?.presence_penalty || 0,
-    };
-    console.log(options)
+        },
+      ]
+    , ...options}
     try {
-      const response: any = await this.client.chat.completions.create(options);
+      const response: any = await this.client.chat.completions.create(mergedOptions);
       const chatGptResponse: any = response.choices[0].message.content;
 
       if (chatGptResponse !== undefined && chatGptResponse !== "NULL") {
