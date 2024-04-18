@@ -1,15 +1,17 @@
-export interface AIClient {
+import { GenerationConfig } from "@google/generative-ai";
+
+export interface BaseAIProvider {
   client: any;
   // model: any
   executePrompt(
     prompt: string,
-    options?: object,
+    options?: OpenAIAdditionalOptions | GenerationConfig,
     modelVersion?: string,
   ): Promise<any>;
 }
 
 export interface GenrativeAiModels {
-  GenrativeAIModels:
+  model:
     | (string & {})
     | "gemini-1.5-pro-latest"
     | "gemini-pro-vision"

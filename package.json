@@ -1,5 +1,5 @@
 {
-  "name": "aiwrapper",
+  "name": "gen-ai-wrapper",
   "version": "1.0.0",
   "description": "Package for genrative output from the ai models like gemini, chatGPT etc.",
   "main": "index.js",

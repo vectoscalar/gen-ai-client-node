@@ -1,10 +1,13 @@
 import { OpenAI } from "openai";
 import { ChatCompletionCreateParamsNonStreaming } from "openai/src/resources/chat";
-import { AIClient, OpenAIAdditionalOptions } from "../common/types";
-import { ChatCompletionCreateParamsBase } from "openai/resources/chat/completions";
+import { BaseAIProvider, OpenAIAdditionalOptions } from "../common/types";
+import {
+  ChatCompletionContentPart,
+  ChatCompletionCreateParamsBase,
+} from "openai/resources/chat/completions";
 import { DEFAULT_OPENAI_MODEL } from "../common/constants";
 
-export class OpenAi implements AIClient {
+export class OpenAIProvider implements BaseAIProvider {
   client: OpenAI;
   /**
    * Creates an instance of OpenAi.
@@ -22,7 +25,7 @@ export class OpenAi implements AIClient {
    * @returns {Promise<any>} A promise that resolves with the generated content.
    */
   async executePrompt(
-    prompt: string,
+    prompt: string | Array<ChatCompletionContentPart>,
     options?: OpenAIAdditionalOptions,
     modelVersion?: ChatCompletionCreateParamsNonStreaming["model"],
   ): Promise<any> {

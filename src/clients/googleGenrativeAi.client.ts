@@ -3,10 +3,10 @@ import {
   GoogleGenerativeAI,
   Part,
 } from "@google/generative-ai";
-import { AIClient, GenrativeAiModels } from "../common/types";
+import { BaseAIProvider, GenrativeAiModels } from "../common/types";
 import { DEFAULT_GENRATIVEAI_MODEL } from "../common/constants";
 
-export class GoogleGenerativeAi implements AIClient {
+export class GoogleGenAIProvider implements BaseAIProvider {
   client: GoogleGenerativeAI;
   /**
    * Creates an instance of GoogleGenerativeAi.
@@ -26,7 +26,7 @@ export class GoogleGenerativeAi implements AIClient {
   async executePrompt(
     prompt: string | Array<string | Part>,
     options?: GenerationConfig,
-    modelVersion?: GenrativeAiModels["GenrativeAIModels"],
+    modelVersion?: GenrativeAiModels["model"],
   ): Promise<any> {
     try {
       const model = this.client.getGenerativeModel({

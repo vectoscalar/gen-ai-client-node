@@ -1,11 +1,11 @@
-import { OpenAi } from "./clients/openAi.client";
-import { GoogleGenerativeAi } from "./clients/googleGenrativeAi.client";
+import { OpenAIProvider } from "./clients/openAi.client";
+import { GoogleGenAIProvider } from "./clients/googleGenrativeAi.client";
 import { PROVIDER_LIST } from "./common/constants";
 import { ChatCompletionCreateParamsBase } from "openai/resources/chat/completions";
 /**
  * Factory class for creating AI clients.
  */
-export class AIClientFactory {
+export class AIProviderFactory {
   /**
    * Creates an instance of the specified AI client.
    *
@@ -17,9 +17,9 @@ export class AIClientFactory {
   static getClient(apiKey: string, provider: string) {
     switch (provider.toLowerCase()) {
       case "openai":
-        return new OpenAi(apiKey);
+        return new OpenAIProvider(apiKey);
       case "googlegenerativeai":
-        return new GoogleGenerativeAi(apiKey);
+        return new GoogleGenAIProvider(apiKey);
       default:
         throw new Error(`Client name not found ${provider}`);
     }
