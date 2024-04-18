@@ -26,12 +26,12 @@ export class GoogleGenerativeAi implements AIClient {
   async executePrompt(
     prompt: string | Array<string | Part>,
     options?: GenerationConfig,
-    modelVersion?: GenrativeAiModels["GenrativeAIModels"]
+    modelVersion?: GenrativeAiModels["GenrativeAIModels"],
   ): Promise<any> {
     try {
       const model = this.client.getGenerativeModel({
         model: DEFAULT_GENRATIVEAI_MODEL,
-        ...(options && {generationConfig:options})
+        ...(options && { generationConfig: options }),
       });
       const response = await model.generateContent(prompt);
       return response.response.text();
@@ -40,4 +40,3 @@ export class GoogleGenerativeAi implements AIClient {
     }
   }
 }
-

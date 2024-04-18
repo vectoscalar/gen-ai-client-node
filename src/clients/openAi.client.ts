@@ -23,20 +23,22 @@ export class OpenAi implements AIClient {
    */
   async executePrompt(
     prompt: string,
-    options?: OpenAIAdditionalOptions ,
-    modelVersion?: ChatCompletionCreateParamsNonStreaming["model"]
+    options?: OpenAIAdditionalOptions,
+    modelVersion?: ChatCompletionCreateParamsNonStreaming["model"],
   ): Promise<any> {
-    const mergedOptions : ChatCompletionCreateParamsBase = {
+    const mergedOptions: ChatCompletionCreateParamsBase = {
       model: modelVersion || DEFAULT_OPENAI_MODEL,
       messages: [
         {
           role: "user",
           content: prompt,
         },
-      ]
-    , ...options}
+      ],
+      ...options,
+    };
     try {
-      const response: any = await this.client.chat.completions.create(mergedOptions);
+      const response: any =
+        await this.client.chat.completions.create(mergedOptions);
       const chatGptResponse: any = response.choices[0].message.content;
 
       if (chatGptResponse !== undefined && chatGptResponse !== "NULL") {

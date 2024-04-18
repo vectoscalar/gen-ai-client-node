@@ -8,7 +8,7 @@ import { ChatCompletionCreateParamsBase } from "openai/resources/chat/completion
 export class AIClientFactory {
   /**
    * Creates an instance of the specified AI client.
-   * 
+   *
    * @param {string} apiKey The API key for accessing the AI service.
    * @param {string} provider The name of the AI service provider.
    * @returns {any} An instance of the specified AI client.
@@ -23,11 +23,8 @@ export class AIClientFactory {
       default:
         throw new Error(`Client name not found ${provider}`);
     }
-    
   }
-  static listProviders(){
-    return PROVIDER_LIST
+  static listProviders() {
+    return PROVIDER_LIST;
   }
 }
-
-

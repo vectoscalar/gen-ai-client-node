@@ -1,8 +1,11 @@
-
 export interface AIClient {
   client: any;
   // model: any
-  executePrompt(prompt: string, options?: object ,modelVersion?:string): Promise<any>;
+  executePrompt(
+    prompt: string,
+    options?: object,
+    modelVersion?: string,
+  ): Promise<any>;
 }
 
 export interface GenrativeAiModels {
@@ -10,7 +13,7 @@ export interface GenrativeAiModels {
     | (string & {})
     | "gemini-1.5-pro-latest"
     | "gemini-pro-vision"
-    | "gemini-1.0-pro-latest "
+    | "gemini-1.0-pro-latest ";
 }
 
 export interface OpenAIAdditionalOptions {
